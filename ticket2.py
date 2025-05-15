@@ -69,7 +69,7 @@ class SponsorshipManager:
                              event_platform_fee_rate: float = DEFAULT_PLATFORM_FEE_RATE,
                              price_increase_cap: float = DEFAULT_PRICE_INCREASE_CAP):
         scenarios_summary = []
-        # Removed debug prints for brevity, assuming they are no longer needed for core logic
+       
 
         for s_alloc_raw in sponsor_allocations_to_test:
             try:
@@ -239,15 +239,15 @@ class SponsorshipManager:
         
         
         # Store more raw inputs for better reconstruction from CSV
-        st.write("DEBUG: `ticket_details_for_commit` before json.dumps:", ticket_details_for_commit) # DEBUG LINE
+        st.write("DEBUG: `ticket_details_for_commit` before json.dumps:", ticket_details_for_commit) 
         json_details_string = json.dumps(ticket_details_for_commit)
-        st.write("DEBUG: `json_details_string` for 'Ticket Details':", json_details_string) # DEBUG LINE
+        st.write("DEBUG: `json_details_string` for 'Ticket Details':", json_details_string) 
 
         event_data = {
             'Name': event_name,
             'Sponsorship Allocated ($)': chosen_sponsor_allocation,
             'Merch Option': merch_option,
-            'Ticket Details': json_details_string, # Use the generated JSON string
+            'Ticket Details': json_details_string, 
             'Total Expected Attendees (Overall)': scenario_to_commit['total_expected_attendees_overall'],
             'Fixed Costs ($)': scenario_to_commit['fixed_costs_event'],
             'Catering Cost ($)': scenario_to_commit['event_total_catering_cost'],
@@ -258,7 +258,7 @@ class SponsorshipManager:
             'Annual Budget After Commit ($)': self.remaining_annual_sponsorship
         }
         self.planned_events.append(event_data)
-        st.write(f"DEBUG: Event '{event_name}' added. Current 'Ticket Details' in self.planned_events:", self.planned_events[-1]['Ticket Details']) # DEBUG LINE
+        st.write(f"DEBUG: Event '{event_name}' added. Current 'Ticket Details' in self.planned_events:", self.planned_events[-1]['Ticket Details']) 
         st.success(f"Event '{event_name}' committed...")
         return True
 
@@ -268,9 +268,9 @@ class SponsorshipManager:
             st.write("DEBUG: No planned events to export.") # DEBUG LINE
             return pd.DataFrame()
 
-        st.write("DEBUG: `self.planned_events` in `get_planned_events_df_for_export` (showing first event's Ticket Details if exists):") # DEBUG LINE
+        st.write("DEBUG: `self.planned_events` in `get_planned_events_df_for_export` (showing first event's Ticket Details if exists):") 
         if self.planned_events:
-            st.text(self.planned_events[0].get('Ticket Details', "N/A - First event has no Ticket Details key or no events")) # DEBUG LINE
+            st.text(self.planned_events[0].get('Ticket Details', "N/A - First event has no Ticket Details key or no events")) 
 
         return pd.DataFrame(self.planned_events)
 
@@ -288,9 +288,9 @@ class SponsorshipManager:
         try:
             for index, row in df_to_load.iterrows():
                 event_data = row.to_dict()
-                ticket_details_str = event_data.get('Ticket Details') # Use .get for safety
+                ticket_details_str = event_data.get('Ticket Details') 
 
-                if pd.notna(ticket_details_str) and isinstance(ticket_details_str, str) and ticket_details_str.strip(): # Added .strip() and check if non-empty
+                if pd.notna(ticket_details_str) and isinstance(ticket_details_str, str) and ticket_details_str.strip(): 
                     try:
                         event_data['Ticket Details'] = json.loads(ticket_details_str)
                     except json.JSONDecodeError as je:
@@ -299,10 +299,10 @@ class SponsorshipManager:
                 else: 
                     event_data['Ticket Details'] = []
                 
-                # Ensure numeric types (it's good to also use .get() and handle potential errors here)
-                event_data['Sponsorship Allocated ($)'] = float(event_data.get('Sponsorship Allocated ($)', 0)) # Added .get() and default
-                event_data['Total Expected Attendees (Overall)'] = int(event_data.get('Total Expected Attendees (Overall)', 0)) # Added .get() and default
-                event_data['Fixed Costs ($)'] = float(event_data.get('Fixed Costs ($)', 0)) # Added .get() and default
+                
+                event_data['Sponsorship Allocated ($)'] = float(event_data.get('Sponsorship Allocated ($)', 0))
+                event_data['Total Expected Attendees (Overall)'] = int(event_data.get('Total Expected Attendees (Overall)', 0)) 
+                event_data['Fixed Costs ($)'] = float(event_data.get('Fixed Costs ($)', 0)) #
                 
                 # Ensure ticket details price/sold are also robustly converted if they exist
                 if isinstance(event_data['Ticket Details'], list):
@@ -326,13 +326,12 @@ class SponsorshipManager:
             return False
 
 
-    def get_planned_events_summary_df(self): # For display
+    def get_planned_events_summary_df(self):
         if not self.planned_events:
             return pd.DataFrame()
         
         display_list = []
         for event_dict in self.planned_events:
-            # Make a copy to modify for display without altering stored data
             event = event_dict.copy()
             base_info = {
                 'Name': event['Name'],
@@ -412,9 +411,9 @@ if uploaded_file is not None:
     try:
         df_imported = pd.read_csv(uploaded_file)
         if manager.load_events_from_df(df_imported):
-            # Force rerun to update displays after successful load
+            # Force rerun to update displays after successful load (inidinite loop problem maybe here)
             st.session_state.event_form_key_counter += 1 # Reset form
-            st.session_state.current_scenarios = [] # Clear any active scenarios
+            st.session_state.current_scenarios = [] 
             st.rerun() 
         else:
             st.sidebar.error("Failed to process the imported CSV.")
@@ -422,7 +421,7 @@ if uploaded_file is not None:
         st.sidebar.error(f"Error reading or processing CSV: {e}")
 
 # Download button for CSV
-if manager.planned_events: # Only show if there are events to export
+if manager.planned_events: #
     export_df = manager.get_planned_events_df_for_export()
     if not export_df.empty and 'Ticket Details' in export_df.columns:
         st.write("DEBUG: `export_df['Ticket Details'].head()` before to_csv:") # DEBUG LINE
@@ -442,13 +441,13 @@ else:
 
 
 st.sidebar.header("Global Event Defaults")
-# ... (Global defaults UI remains the same) ...
+
 default_refund_ui = st.sidebar.slider("Default Refund Rate (%)", 0, 20, int(DEFAULT_REFUND_RATE*100), key="default_refund_ui_k_csv") / 100.0
 default_platform_fee_ui = st.sidebar.slider("Default Platform Fee Rate (%)", 0, 20, int(DEFAULT_PLATFORM_FEE_RATE*100), key="default_platform_fee_ui_k_csv") / 100.0
 default_price_cap_ui = st.sidebar.number_input("Default Max Price Increase Cap ($)", min_value=0.0, value=DEFAULT_PRICE_INCREASE_CAP, step=1.0, key="default_price_cap_ui_k_csv")
 
 
-# --- Main Area for Planning (remains largely the same) ---
+
 st.header("📊 Plan New Event Scenarios")
 st.session_state.merch_option_ui = st.radio(
     "Merchandise Option:",
@@ -495,8 +494,6 @@ with event_form:
     calculate_scenarios_button = st.form_submit_button("Calculate Price Scenarios")
 
 if calculate_scenarios_button:
-    # ... (Form submission and scenario calculation logic - largely same as previous correct version)
-    # Ensure you use the *_form and *_submit variables correctly.
     valid_inputs = True
     merch_option_for_calc = st.session_state.merch_option_ui 
 
@@ -536,7 +533,7 @@ if calculate_scenarios_button:
 
 
 if 'current_scenarios' in st.session_state and st.session_state.current_scenarios:
-    # ... (Scenario Display and Commit Logic - largely same as previous correct version)
+
     current_event_name_display = st.session_state.current_scenarios[0]['event_name']
     current_merch_option_display = st.session_state.current_scenarios[0]['merch_option']
     st.subheader(f"Price Scenarios for: {current_event_name_display} (Merch: {current_merch_option_display})")
@@ -548,7 +545,7 @@ if 'current_scenarios' in st.session_state and st.session_state.current_scenario
     display_cols.extend(['potential_remaining_annual_budget', 'notes'])
     display_cols = [col for col in display_cols if col in scenarios_df_display.columns]
 
-    def format_price_display(x): # Renamed for clarity
+    def format_price_display(x): 
         if pd.isnull(x): return "N/A"
         if np.isinf(x): return "Inf"
         return f"${x:,.2f}"
@@ -567,7 +564,7 @@ if 'current_scenarios' in st.session_state and st.session_state.current_scenario
     )
 
     st.subheader("Commit an Event Plan from Scenarios")
-    committable_scenario_options = [] # Populate as before
+    committable_scenario_options = [] 
     for i, s_scenario in enumerate(st.session_state.current_scenarios):
         label_parts = [f"Sponsor: ${s_scenario['sponsor_allocation_tested']:,.2f}"]
         valid_for_commit_flag = True
@@ -603,7 +600,7 @@ if 'current_scenarios' in st.session_state and st.session_state.current_scenario
         if selected_scenario_display_option:
             selected_scenario_index = selected_scenario_display_option[1]
             scenario_to_commit_data = st.session_state.current_scenarios[selected_scenario_index]
-            st.write("You are about to commit:") # Commit summary display as before
+            st.write("You are about to commit:") 
             commit_summary = {
                 "Event Name": scenario_to_commit_data['event_name'],
                 "Sponsorship to Allocate": f"${scenario_to_commit_data['sponsor_allocation_tested']:,.2f}",
@@ -638,7 +635,7 @@ def format_price_display(price):
 
 
 st.header("🗓️ Summary of Planned Events")
-planned_events_df_display = manager.get_planned_events_summary_df() # Renamed for clarity
+planned_events_df_display = manager.get_planned_events_summary_df()
 if not planned_events_df_display.empty:
     st.dataframe(
         planned_events_df_display.style.format({
