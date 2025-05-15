@@ -3,7 +3,7 @@
 
 *The first half derives the break-even formula step-by-step.*  
 *The second half maps every symbol to the Python variables used in
-`tickets.py`.*
+`ticket.py`.*
 
 ---
 
