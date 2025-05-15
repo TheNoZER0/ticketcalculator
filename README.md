@@ -74,7 +74,7 @@ $$
 
 ## 5  Profit function
 
-![Profit formula](<https://latex.codecogs.com/svg.latex?\pi(P)%3D%20\underbrace%7B(1-%5Cphi)P%5C%2CQ(P)%7D_%7B%5Ctext%7Bkept%20revenue%7D%7D%20%2BS%20-%5Cunderbrace%7BF%7D_%7B%5Ctext%7Bfixed%7D%7D%20-%5Cunderbrace%7B(1-%5Cphi)v%5C%2CQ(P)%7D_%7B%5Ctext%7Bper-head%7D%7D%20-%5Cunderbrace%7Bc_%7B%5Ctext%7Bref%7D%7D%5Cphi%5C%2CQ(P)%7D_%7B%5Ctext%7Brefund%20fee%7D%7D>)
+![alt text](image.png)
 
 
 
