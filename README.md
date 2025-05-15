@@ -74,12 +74,9 @@ $$
 
 ## 5  Profit function
 
-$$\pi(P)=
-\underbrace{(1-\phi)P\,Q(P)}_{\text{kept revenue}}
-+S
--\underbrace{F}_{\text{fixed}}
--\underbrace{(1-\phi)v\,Q(P)}_{\text{per-head}}
--\underbrace{c_{\text{ref}}\phi\,Q(P)}_{\text{refund fee}}$$
+$$
+\pi(P)= \underbrace{(1-\phi)P\,Q(P)}_{\text{kept revenue}} +S -\underbrace{F}_{\text{fixed}} -\underbrace{(1-\phi)v\,Q(P)}_{\text{per-head}} -\underbrace{c_{\text{ref}}\phi\,Q(P)}_{\text{refund fee}}
+$$
 
 ---
 
