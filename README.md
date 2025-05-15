@@ -3,7 +3,15 @@
 
 *The first half derives the break-even formula step-by-step.*  
 *The second half maps every symbol to the Python variables used in
-`ticket.py`.*
+`ticket.py`.
+
+## 0 Running frontend ticket2.py
+
+```bash
+streamlit run ticket2.py
+```
+
+The parameters are all adjusted in the UI
 
 ---
 
