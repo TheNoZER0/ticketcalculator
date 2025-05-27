@@ -17,7 +17,7 @@ REFUND     = 0.03      # φ
 # humanitix approximate fee per ticket
 PLATFORM_F = 0.04      
 # these are fixed costs, basically things like prizes etc
-F_FIXED    = 5000
+F_FIXED    = 0
 #Sponsor is how much we use from the bank account from sponsors
 SPONSOR    = 5000
 CATERING   = 4000
